@@ -237,9 +237,6 @@ define([], function() {
         run();
     };
     
-    
-    export {init};
-    
 
     return {
         init: init

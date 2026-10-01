@@ -190,7 +190,7 @@ define([], function() {
                 uploadBlob(blob, filename);
             };
     
-            recorder.start(1000);
+            // Let MediaRecorder produce one continuous WebM/Opus recording.\n            // We deliberately do not use a timeslice here: the complete recording\n            // is assembled by MediaRecorder and delivered in the final dataavailable\n            // event when stop() is called. This matches the proven EASE implementation.\n            recorder.start();
             startAt = Date.now();
             setStatus(M.util.get_string('recordingnow', 'qtype_audioresponse'));
     

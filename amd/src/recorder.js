@@ -80,11 +80,11 @@ export const init = (id, settings) => {
         stopTracks();
     };
 
-    const uploadBlob = (blob) => {
+    const uploadBlob = (blob, filename) => {
         uploadStarted = true;
         setStatus(''); 
         const formData = new FormData();
-        formData.append('repo_upload_file', blob, settings.recordingFilename);
+        formData.append('repo_upload_file', blob, filename);
         formData.append('sesskey', M.cfg.sesskey);
         formData.append('repo_id', settings.uploadRepositoryId);
         formData.append('itemid', settings.draftItemId);
@@ -139,7 +139,7 @@ export const init = (id, settings) => {
 
     const beginRecording = async () => {
         if (!checkCanWork()) {
-            fail('WebRTC recording is not supported in this browser or connection.');
+            fail(M.util.get_string('nowebrtc', 'qtype_audioresponse'));
             return;
         }
 
@@ -182,7 +182,9 @@ export const init = (id, settings) => {
                 fail(M.util.get_string('recordingfailed', 'qtype_audioresponse'));
                 return;
             }
-            uploadBlob(blob);
+            const filename = type.indexOf('ogg') !== -1 ?
+                'audioresponse.ogg' : 'audioresponse.webm';
+            uploadBlob(blob, filename);
         };
 
         recorder.start(1000);
@@ -228,11 +230,6 @@ export const init = (id, settings) => {
         await wait(1000);
         await beginRecording();
     };
-
-    // Prevent Moodle's form-change checker from treating the recorder setup itself as a change.
-    if (typeof M.core_formchangechecker !== 'undefined') {
-        M.core_formchangechecker.set_form_submitted();
-    }
 
     run();
 };

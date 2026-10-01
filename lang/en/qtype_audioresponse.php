@@ -22,6 +22,7 @@ $string['recordingstarting'] = 'Recording starts in {$a}';
 $string['recordingnow'] = 'Recording';
 $string['recordingfinished'] = 'Recording finished. Saving ...';
 $string['recordingfailed'] = 'Recording failed.';
+$string['nowebrtc'] = 'Your browser or connection does not support secure audio recording.';
 $string['microphonepermission'] = 'Microphone access is required to record your response.';
 $string['uploadcomplete'] = 'Recording saved.';
 $string['uploadfailed'] = 'The recording could not be saved. Please contact your teacher.';

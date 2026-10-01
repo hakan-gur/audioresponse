@@ -54,6 +54,11 @@ define([], function() {
         let stopped = false;
         let startAt = 0;
         let uploadStarted = false;
+        const diagnostic = (message, data) => {
+            if (window.console && console.log) {
+                console.log('Audio Response:', message, data || '');
+            }
+        };
     
         const setStatus = (text) => {
             status.textContent = text;
@@ -85,6 +90,7 @@ define([], function() {
     
         const uploadBlob = (blob, filename) => {
             uploadStarted = true;
+            diagnostic('uploadBlob()', {size: blob.size, type: blob.type, filename: filename});
             setStatus(''); 
             const formData = new FormData();
             formData.append('repo_upload_file', blob, filename);
@@ -134,7 +140,9 @@ define([], function() {
             stopped = true;
             timer.textContent = '';
             setStatus(M.util.get_string('recordingfinished', 'qtype_audioresponse'));
+            diagnostic('finish()', {state: recorder ? recorder.state : 'no recorder'});
             if (recorder && recorder.state !== 'inactive') {
+                diagnostic('calling recorder.stop()', {state: recorder.state});
                 recorder.stop();
             } else {
                 stopTracks();
@@ -156,6 +164,7 @@ define([], function() {
     
             chunks = [];
             stopped = false;
+            diagnostic('getUserMedia success', {trackState: stream.getAudioTracks()[0] ? stream.getAudioTracks()[0].readyState : 'none', trackEnabled: stream.getAudioTracks()[0] ? stream.getAudioTracks()[0].enabled : null, trackMuted: stream.getAudioTracks()[0] ? stream.getAudioTracks()[0].muted : null});
     
             let mimeType = '';
             const candidates = ['audio/webm;codecs=opus', 'audio/webm', 'audio/ogg;codecs=opus'];
@@ -168,25 +177,32 @@ define([], function() {
     
             try {
                 recorder = mimeType ? new MediaRecorder(stream, {mimeType}) : new MediaRecorder(stream);
+                diagnostic('MediaRecorder created', {mimeType: recorder.mimeType, state: recorder.state});
             } catch (e) {
                 fail(M.util.get_string('recordingfailed', 'qtype_audioresponse'));
                 return;
             }
     
+            recorder.onstart = () => diagnostic('onstart', {state: recorder.state, mimeType: recorder.mimeType});
+
             recorder.ondataavailable = (event) => {
+                diagnostic('ondataavailable', {size: event.data ? event.data.size : 0, type: event.data ? event.data.type : '', state: recorder.state});
                 if (event.data && event.data.size) {
                     chunks.push(event.data);
                 }
             };
     
-            recorder.onerror = () => {
+            recorder.onerror = (event) => {
+                diagnostic('onerror', {error: event && event.error ? event.error.name : 'unknown'});
                 stopTracks();
                 fail(M.util.get_string('recordingfailed', 'qtype_audioresponse'));
             };
 
             recorder.onstop = () => {
+                diagnostic('onstop', {state: recorder.state, chunks: chunks.length});
                 const type = recorder.mimeType || 'audio/webm';
                 const blob = new Blob(chunks, {type});
+                diagnostic('final Blob created', {size: blob.size, type: blob.type, chunks: chunks.length});
                 stopTracks();
 
                 if (!blob.size) {
@@ -199,6 +215,7 @@ define([], function() {
             };
     
             // Let MediaRecorder produce one continuous WebM/Opus recording.\n            // We deliberately do not use a timeslice here: the complete recording\n            // is assembled by MediaRecorder and delivered in the final dataavailable\n            // event when stop() is called. This matches the proven EASE implementation.\n            recorder.start();
+            diagnostic('recorder.start() returned', {state: recorder.state, mimeType: recorder.mimeType});
             startAt = Date.now();
             setStatus(M.util.get_string('recordingnow', 'qtype_audioresponse'));
     

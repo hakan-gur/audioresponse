@@ -136,8 +136,9 @@ define([], function() {
             setStatus(M.util.get_string('recordingfinished', 'qtype_audioresponse'));
             if (recorder && recorder.state !== 'inactive') {
                 recorder.stop();
+            } else {
+                stopTracks();
             }
-            stopTracks();
         };
     
         const beginRecording = async () => {
@@ -178,9 +179,16 @@ define([], function() {
                 }
             };
     
+            recorder.onerror = () => {
+                stopTracks();
+                fail(M.util.get_string('recordingfailed', 'qtype_audioresponse'));
+            };
+
             recorder.onstop = () => {
                 const type = recorder.mimeType || 'audio/webm';
                 const blob = new Blob(chunks, {type});
+                stopTracks();
+
                 if (!blob.size) {
                     fail(M.util.get_string('recordingfailed', 'qtype_audioresponse'));
                     return;

@@ -167,9 +167,18 @@ define([], function() {
             diagnostic('getUserMedia success', {trackState: stream.getAudioTracks()[0] ? stream.getAudioTracks()[0].readyState : 'none', trackEnabled: stream.getAudioTracks()[0] ? stream.getAudioTracks()[0].enabled : null, trackMuted: stream.getAudioTracks()[0] ? stream.getAudioTracks()[0].muted : null});
     
             try {
-                recorder = new MediaRecorder(stream);
+                diagnostic('MediaRecorder support', {
+                    supportedWebm: MediaRecorder.isTypeSupported('audio/webm'),
+                    supportedWebmOpus: MediaRecorder.isTypeSupported('audio/webm;codecs=opus'),
+                    supportedOggOpus: MediaRecorder.isTypeSupported('audio/ogg;codecs=opus')
+                });
+                recorder = new MediaRecorder(stream, {mimeType: 'audio/webm'});
                 diagnostic('MediaRecorder created', {mimeType: recorder.mimeType, state: recorder.state});
             } catch (e) {
+                diagnostic('MediaRecorder constructor failed', {
+                    name: e && e.name ? e.name : 'unknown',
+                    message: e && e.message ? e.message : String(e)
+                });
                 fail(M.util.get_string('recordingfailed', 'qtype_audioresponse'));
                 return;
             }

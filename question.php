@@ -62,7 +62,7 @@ class qtype_audioresponse_question extends question_with_responses {
 
     public function check_file_access($qa, $options, $component, $filearea,
             $args, $forcedownload): bool {
-        if ($component === 'question' && $filearea === 'response_recording') {
+        if ($component === 'question' && $filearea === 'recording') {
             return true;
         }
         return parent::check_file_access($qa, $options, $component, $filearea, $args, $forcedownload);

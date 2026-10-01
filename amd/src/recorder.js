@@ -165,6 +165,19 @@ define([], function() {
             chunks = [];
             stopped = false;
             diagnostic('getUserMedia success', {trackState: stream.getAudioTracks()[0] ? stream.getAudioTracks()[0].readyState : 'none', trackEnabled: stream.getAudioTracks()[0] ? stream.getAudioTracks()[0].enabled : null, trackMuted: stream.getAudioTracks()[0] ? stream.getAudioTracks()[0].muted : null});
+
+            diagnostic('Before recorder.start()', {
+                streamActive: stream.active,
+                trackCount: stream.getTracks().length,
+                tracks: stream.getTracks().map(function(track) {
+                    return {
+                        kind: track.kind,
+                        readyState: track.readyState,
+                        enabled: track.enabled,
+                        muted: track.muted
+                    };
+                })
+            });
     
             diagnostic('MediaRecorder constructor test', {
                 supported: typeof MediaRecorder !== 'undefined',
@@ -198,7 +211,11 @@ define([], function() {
             };
     
             recorder.onerror = (event) => {
-                diagnostic('onerror', {error: event && event.error ? event.error.name : 'unknown'});
+                diagnostic('onerror', {
+                    errorName: event && event.error ? event.error.name : 'unknown',
+                    errorMessage: event && event.error ? event.error.message : 'unknown',
+                    state: recorder.state
+                });
                 stopTracks();
                 fail(M.util.get_string('recordingfailed', 'qtype_audioresponse'));
             };
@@ -219,8 +236,35 @@ define([], function() {
                 uploadBlob(blob, filename);
             };
     
-            // Let MediaRecorder produce one continuous WebM/Opus recording.\n            // We deliberately do not use a timeslice here: the complete recording\n            // is assembled by MediaRecorder and delivered in the final dataavailable\n            // event when stop() is called. This matches the proven EASE implementation.\n            recorder.start();
-            diagnostic('recorder.start() returned', {state: recorder.state, mimeType: recorder.mimeType});
+            // Let MediaRecorder produce one continuous WebM/Opus recording.\n            // We deliberately do not use a timeslice here: the complete recording\n            // is assembled by MediaRecorder and delivered in the final dataavailable\n            // event when stop() is called. This matches the proven EASE implementation.\n            try {
+                recorder.start();
+
+                diagnostic('recorder.start() returned', {
+                    state: recorder.state,
+                    mimeType: recorder.mimeType,
+                    streamActive: stream.active,
+                    trackState: stream.getAudioTracks()[0]
+                        ? stream.getAudioTracks()[0].readyState
+                        : 'no-audio-track'
+                });
+
+                window.setTimeout(function() {
+                    diagnostic('Recorder state 100ms after start', {
+                        state: recorder.state,
+                        streamActive: stream.active,
+                        trackState: stream.getAudioTracks()[0]
+                            ? stream.getAudioTracks()[0].readyState
+                            : 'no-audio-track'
+                    });
+                }, 100);
+            } catch (e) {
+                diagnostic('recorder.start() threw', {
+                    name: e && e.name ? e.name : 'unknown',
+                    message: e && e.message ? e.message : String(e)
+                });
+                fail(M.util.get_string('recordingfailed', 'qtype_audioresponse'));
+                return;
+            }
             startAt = Date.now();
             setStatus(M.util.get_string('recordingnow', 'qtype_audioresponse'));
     

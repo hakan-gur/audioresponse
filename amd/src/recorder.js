@@ -166,17 +166,8 @@ define([], function() {
             stopped = false;
             diagnostic('getUserMedia success', {trackState: stream.getAudioTracks()[0] ? stream.getAudioTracks()[0].readyState : 'none', trackEnabled: stream.getAudioTracks()[0] ? stream.getAudioTracks()[0].enabled : null, trackMuted: stream.getAudioTracks()[0] ? stream.getAudioTracks()[0].muted : null});
     
-            let mimeType = '';
-            const candidates = ['audio/webm;codecs=opus', 'audio/webm', 'audio/ogg;codecs=opus'];
-            for (const candidate of candidates) {
-                if (MediaRecorder.isTypeSupported(candidate)) {
-                    mimeType = candidate;
-                    break;
-                }
-            }
-    
             try {
-                recorder = mimeType ? new MediaRecorder(stream, {mimeType}) : new MediaRecorder(stream);
+                recorder = new MediaRecorder(stream);
                 diagnostic('MediaRecorder created', {mimeType: recorder.mimeType, state: recorder.state});
             } catch (e) {
                 fail(M.util.get_string('recordingfailed', 'qtype_audioresponse'));

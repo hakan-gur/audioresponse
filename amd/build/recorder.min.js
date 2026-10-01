@@ -53,13 +53,6 @@ define([], function() {
         let chunks = [];
         let stopped = false;
         let startAt = 0;
-        let uploadStarted = false;
-        const diagnostic = (message, data) => {
-            if (window.console && console.log) {
-                console.log('Audio Response:', message, data || '');
-            }
-        };
-    
         const setStatus = (text) => {
             status.textContent = text;
         };
@@ -89,8 +82,6 @@ define([], function() {
         };
     
         const uploadBlob = (blob, filename) => {
-            uploadStarted = true;
-            diagnostic('uploadBlob()', {size: blob.size, type: blob.type, filename: filename});
             setStatus(''); 
             const formData = new FormData();
             formData.append('repo_upload_file', blob, filename);
@@ -140,9 +131,7 @@ define([], function() {
             stopped = true;
             timer.textContent = '';
             setStatus(M.util.get_string('recordingfinished', 'qtype_audioresponse'));
-            diagnostic('finish()', {state: recorder ? recorder.state : 'no recorder'});
             if (recorder && recorder.state !== 'inactive') {
-                diagnostic('calling recorder.stop()', {state: recorder.state});
                 recorder.stop();
             } else {
                 stopTracks();
@@ -164,34 +153,9 @@ define([], function() {
     
             chunks = [];
             stopped = false;
-            diagnostic('getUserMedia success', {trackState: stream.getAudioTracks()[0] ? stream.getAudioTracks()[0].readyState : 'none', trackEnabled: stream.getAudioTracks()[0] ? stream.getAudioTracks()[0].enabled : null, trackMuted: stream.getAudioTracks()[0] ? stream.getAudioTracks()[0].muted : null});
-
-            diagnostic('Before recorder.start()', {
-                streamActive: stream.active,
-                trackCount: stream.getTracks().length,
-                tracks: stream.getTracks().map(function(track) {
-                    return {
-                        kind: track.kind,
-                        readyState: track.readyState,
-                        enabled: track.enabled,
-                        muted: track.muted
-                    };
-                })
-            });
-    
-            diagnostic('MediaRecorder constructor test', {
-                supported: typeof MediaRecorder !== 'undefined',
-                webm: MediaRecorder.isTypeSupported('audio/webm'),
-                webmOpus: MediaRecorder.isTypeSupported('audio/webm;codecs=opus'),
-                oggOpus: MediaRecorder.isTypeSupported('audio/ogg;codecs=opus')
-            });
 
             try {
                 recorder = new MediaRecorder(stream, {mimeType: 'audio/webm'});
-                diagnostic('MediaRecorder created', {
-                    mimeType: recorder.mimeType,
-                    state: recorder.state
-                });
             } catch (e) {
                 diagnostic('MediaRecorder constructor failed', {
                     name: e && e.name ? e.name : 'unknown',
@@ -201,30 +165,20 @@ define([], function() {
                 return;
             }
 
-            recorder.onstart = () => diagnostic('onstart', {state: recorder.state, mimeType: recorder.mimeType});
-
             recorder.ondataavailable = (event) => {
-                diagnostic('ondataavailable', {size: event.data ? event.data.size : 0, type: event.data ? event.data.type : '', state: recorder.state});
                 if (event.data && event.data.size) {
                     chunks.push(event.data);
                 }
             };
     
             recorder.onerror = (event) => {
-                diagnostic('onerror', {
-                    errorName: event && event.error ? event.error.name : 'unknown',
-                    errorMessage: event && event.error ? event.error.message : 'unknown',
-                    state: recorder.state
-                });
                 stopTracks();
                 fail(M.util.get_string('recordingfailed', 'qtype_audioresponse'));
             };
 
             recorder.onstop = () => {
-                diagnostic('onstop', {state: recorder.state, chunks: chunks.length});
                 const type = recorder.mimeType || 'audio/webm';
                 const blob = new Blob(chunks, {type});
-                diagnostic('final Blob created', {size: blob.size, type: blob.type, chunks: chunks.length});
                 stopTracks();
 
                 if (!blob.size) {
@@ -242,30 +196,7 @@ define([], function() {
             // event when stop() is called. This matches the proven EASE implementation.
             try {
                 recorder.start();
-
-                diagnostic('recorder.start() returned', {
-                    state: recorder.state,
-                    mimeType: recorder.mimeType,
-                    streamActive: stream.active,
-                    trackState: stream.getAudioTracks()[0]
-                        ? stream.getAudioTracks()[0].readyState
-                        : 'no-audio-track'
-                });
-
-                window.setTimeout(function() {
-                    diagnostic('Recorder state 100ms after start', {
-                        state: recorder.state,
-                        streamActive: stream.active,
-                        trackState: stream.getAudioTracks()[0]
-                            ? stream.getAudioTracks()[0].readyState
-                            : 'no-audio-track'
-                    });
-                }, 100);
             } catch (e) {
-                diagnostic('recorder.start() threw', {
-                    name: e && e.name ? e.name : 'unknown',
-                    message: e && e.message ? e.message : String(e)
-                });
                 fail(M.util.get_string('recordingfailed', 'qtype_audioresponse'));
                 return;
             }

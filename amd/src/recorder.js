@@ -236,7 +236,11 @@ define([], function() {
                 uploadBlob(blob, filename);
             };
     
-            // Let MediaRecorder produce one continuous WebM/Opus recording.\n            // We deliberately do not use a timeslice here: the complete recording\n            // is assembled by MediaRecorder and delivered in the final dataavailable\n            // event when stop() is called. This matches the proven EASE implementation.\n            try {
+            // Let MediaRecorder produce one continuous WebM/Opus recording.
+            // We deliberately do not use a timeslice here: the complete recording
+            // is assembled by MediaRecorder and delivered in the final dataavailable
+            // event when stop() is called. This matches the proven EASE implementation.
+            try {
                 recorder.start();
 
                 diagnostic('recorder.start() returned', {

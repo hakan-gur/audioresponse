@@ -102,6 +102,9 @@ class qtype_audioresponse_renderer extends qtype_renderer {
             'draftItemId' => (int)$draftitemid,
             'maxUploadSize' => $this->get_upload_size_limit($options->context),
             'recordingFilename' => $filename,
+            'delay' => (int)$question->delaybefore,
+            'preparation' => (int)$question->preparationcountdown,
+            'duration' => (int)$question->recordingduration,
         ];
 
         $this->page->requires->strings_for_js([

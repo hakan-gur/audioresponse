@@ -30,6 +30,7 @@ class qtype_audioresponse extends question_type {
 
     public function save_defaults_for_new_questions(stdClass $fromform): void {
         parent::save_defaults_for_new_questions($fromform);
+        $this->set_default_value('defaultmark', 10);
         $this->set_default_value('delaybefore', 0);
         $this->set_default_value('preparationcountdown', 0);
         $this->set_default_value('recordingduration', self::DEFAULT_RECORDING_DURATION);

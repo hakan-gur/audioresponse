@@ -2,9 +2,9 @@
 
 A manually graded Moodle question type for standardized-test-style speaking responses.
 
-## Target
+## Features
 
-- Moodle 4.1, 4.2, 4.3, 4.4
+- Moodle 4.1, 4.2, 4.3, 4.4, 4.5
 - Designed for later compatibility with Moodle 5.x versions.
 - No administrator settings.
 - Fully translation-ready.

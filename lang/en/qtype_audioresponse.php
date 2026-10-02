@@ -17,8 +17,8 @@ $string['err_recordingdurationmin'] = 'Recording duration must be at least {$a} 
 $string['err_recordingdurationmax'] = 'Recording duration cannot be longer than {$a}.';
 $string['err_nonnegative'] = 'This value cannot be negative.';
 
-$string['preparing'] = 'Preparing ...';
-$string['recordingstarting'] = 'Recording starts in {$a}';
+$string['preparing'] = 'Instruction';
+$string['recordingstarting'] = 'Get Ready';
 $string['recordingnow'] = 'Recording';
 $string['recordingfinished'] = 'Recording finished. Saving ...';
 $string['recordingfailed'] = 'Recording failed.';

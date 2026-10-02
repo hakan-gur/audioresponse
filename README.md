@@ -4,8 +4,8 @@ A manually graded Moodle question type for standardized-test-style speaking resp
 
 ## Target
 
-- Moodle 4.1.22 initially.
-- Designed for later compatibility testing through Moodle 5.0.
+- Moodle 4.1, 4.2.
+- Designed for later compatibility with Moodle 5.x versions.
 - No administrator settings.
 - Fully translation-ready.
 - Audio only.

@@ -7,28 +7,38 @@ class qtype_audioresponse_edit_form extends question_edit_form {
 
     protected function definition_inner($mform) {
         // definition_inner() is called by Moodle immediately after ID Number and before Tags.
-        $mform->addElement('duration', 'delaybefore',
-            get_string('delaybefore', 'qtype_audioresponse'),
-            ['units' => [1], 'optional' => false]);
+        $mform->addElement('group', 'delaybefore_group',
+            get_string('delaybefore', 'qtype_audioresponse'), [
+                $mform->createElement('text', 'delaybefore', '', ['size' => 5]),
+                $mform->createElement('static', '', '', 'seconds'),
+            ]);
         $mform->addHelpButton('delaybefore', 'delaybefore', 'qtype_audioresponse');
         $mform->setDefault('delaybefore', $this->get_default_value('delaybefore', 0));
 
-        $mform->addElement('duration', 'preparationcountdown',
-            get_string('preparationcountdown', 'qtype_audioresponse'),
-            ['units' => [1], 'optional' => false]);
+        $mform->addElement('group', 'preparationcountdown_group',
+            get_string('preparationcountdown', 'qtype_audioresponse'), [
+                $mform->createElement('text', 'preparationcountdown', '', ['size' => 5]),
+                $mform->createElement('static', '', '', 'seconds'),
+            ]);
         $mform->addHelpButton('preparationcountdown', 'preparationcountdown', 'qtype_audioresponse');
         $mform->setDefault('preparationcountdown',
             $this->get_default_value('preparationcountdown', 0));
 
-        $mform->addElement('duration', 'recordingduration',
-            get_string('recordingduration', 'qtype_audioresponse'),
-            ['units' => [1, 60], 'defaultunit' => 1, 'optional' => false]);
+        $mform->addElement('group', 'recordingduration_group',
+            get_string('recordingduration', 'qtype_audioresponse'), [
+                $mform->createElement('text', 'recordingduration', '', ['size' => 5]),
+                $mform->createElement('static', '', '', 'seconds'),
+            ]);
         $mform->addHelpButton('recordingduration', 'recordingduration', 'qtype_audioresponse');
         $mform->setDefault('recordingduration',
             $this->get_default_value('recordingduration',
                 qtype_audioresponse::DEFAULT_RECORDING_DURATION));
 
         // Audio Response uses 10 marks as its new-question default.
+        $mform->setType('delaybefore', PARAM_INT);
+        $mform->setType('preparationcountdown', PARAM_INT);
+        $mform->setType('recordingduration', PARAM_INT);
+
         $mform->setDefault('defaultmark', 10);
 
     }

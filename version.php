@@ -1,7 +1,7 @@
 <?php
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2026100100;
+$plugin->version   = 2026100400;
 $plugin->requires  = 2022112800;
 $plugin->component = 'qtype_audioresponse';
 $plugin->maturity  = MATURITY_ALPHA;

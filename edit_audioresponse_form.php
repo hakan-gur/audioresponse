@@ -22,7 +22,7 @@ class qtype_audioresponse_edit_form extends question_edit_form {
 
         $mform->addElement('duration', 'recordingduration',
             get_string('recordingduration', 'qtype_audioresponse'),
-            ['units' => [60, 1], 'optional' => false]);
+            ['units' => [60, 1], 'defaultunit' => 1, 'optional' => false]);
         $mform->addHelpButton('recordingduration', 'recordingduration', 'qtype_audioresponse');
         $mform->setDefault('recordingduration',
             $this->get_default_value('recordingduration',

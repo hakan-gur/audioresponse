@@ -7,22 +7,28 @@ class qtype_audioresponse_edit_form extends question_edit_form {
 
     protected function definition_inner($mform) {
         // definition_inner() is called by Moodle immediately after ID Number and before Tags.
-        $mform->addElement('text', 'delaybefore',
-            get_string('delaybefore', 'qtype_audioresponse'), ['size' => 5]);
-        $mform->addElement('static', 'delaybefore_unit', '', 'seconds');
+        $delaybeforegroup = [];
+        $delaybeforegroup[] = $mform->createElement('text', 'delaybefore', '', ['size' => 5]);
+        $delaybeforegroup[] = $mform->createElement('static', 'delaybefore_unit', '', 'seconds');
+        $mform->addGroup($delaybeforegroup, 'delaybeforegroup',
+            get_string('delaybefore', 'qtype_audioresponse'), ' ', false);
         $mform->addHelpButton('delaybefore', 'delaybefore', 'qtype_audioresponse');
         $mform->setDefault('delaybefore', $this->get_default_value('delaybefore', 0));
 
-        $mform->addElement('text', 'preparationcountdown',
-            get_string('preparationcountdown', 'qtype_audioresponse'), ['size' => 5]);
-        $mform->addElement('static', 'preparationcountdown_unit', '', 'seconds');
+        $preparationcountdowngroup = [];
+        $preparationcountdowngroup[] = $mform->createElement('text', 'preparationcountdown', '', ['size' => 5]);
+        $preparationcountdowngroup[] = $mform->createElement('static', 'preparationcountdown_unit', '', 'seconds');
+        $mform->addGroup($preparationcountdowngroup, 'preparationcountdowngroup',
+            get_string('preparationcountdown', 'qtype_audioresponse'), ' ', false);
         $mform->addHelpButton('preparationcountdown', 'preparationcountdown', 'qtype_audioresponse');
         $mform->setDefault('preparationcountdown',
             $this->get_default_value('preparationcountdown', 0));
 
-        $mform->addElement('text', 'recordingduration',
-            get_string('recordingduration', 'qtype_audioresponse'), ['size' => 5]);
-        $mform->addElement('static', 'recordingduration_unit', '', 'seconds');
+        $recordingdurationgroup = [];
+        $recordingdurationgroup[] = $mform->createElement('text', 'recordingduration', '', ['size' => 5]);
+        $recordingdurationgroup[] = $mform->createElement('static', 'recordingduration_unit', '', 'seconds');
+        $mform->addGroup($recordingdurationgroup, 'recordingdurationgroup',
+            get_string('recordingduration', 'qtype_audioresponse'), ' ', false);
         $mform->addHelpButton('recordingduration', 'recordingduration', 'qtype_audioresponse');
         $mform->setDefault('recordingduration',
             $this->get_default_value('recordingduration',

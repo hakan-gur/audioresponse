@@ -9,7 +9,7 @@ class qtype_audioresponse extends question_type {
 
     public const MIN_RECORDING_DURATION = 10;
     public const MAX_RECORDING_DURATION = 600;
-    public const DEFAULT_RECORDING_DURATION = 600;
+    public const DEFAULT_RECORDING_DURATION = 60;
 
     public function is_manual_graded(): bool {
         return true;

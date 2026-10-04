@@ -12,7 +12,7 @@ class qtype_audioresponse_edit_form extends question_edit_form {
         $delaybeforegroup[] = $mform->createElement('static', 'delaybefore_unit', '', 'seconds');
         $mform->addGroup($delaybeforegroup, 'delaybeforegroup',
             get_string('delaybefore', 'qtype_audioresponse'), ' ', false);
-        $mform->addHelpButton('delaybefore', 'delaybefore', 'qtype_audioresponse');
+        $mform->addHelpButton('delaybeforegroup', 'delaybefore', 'qtype_audioresponse');
         $mform->setDefault('delaybefore', $this->get_default_value('delaybefore', 0));
 
         $preparationcountdowngroup = [];
@@ -20,7 +20,7 @@ class qtype_audioresponse_edit_form extends question_edit_form {
         $preparationcountdowngroup[] = $mform->createElement('static', 'preparationcountdown_unit', '', 'seconds');
         $mform->addGroup($preparationcountdowngroup, 'preparationcountdowngroup',
             get_string('preparationcountdown', 'qtype_audioresponse'), ' ', false);
-        $mform->addHelpButton('preparationcountdown', 'preparationcountdown', 'qtype_audioresponse');
+        $mform->addHelpButton('preparationcountdowngroup', 'preparationcountdown', 'qtype_audioresponse');
         $mform->setDefault('preparationcountdown',
             $this->get_default_value('preparationcountdown', 0));
 
@@ -29,7 +29,7 @@ class qtype_audioresponse_edit_form extends question_edit_form {
         $recordingdurationgroup[] = $mform->createElement('static', 'recordingduration_unit', '', 'seconds');
         $mform->addGroup($recordingdurationgroup, 'recordingdurationgroup',
             get_string('recordingduration', 'qtype_audioresponse'), ' ', false);
-        $mform->addHelpButton('recordingduration', 'recordingduration', 'qtype_audioresponse');
+        $mform->addHelpButton('recordingdurationgroup', 'recordingduration', 'qtype_audioresponse');
         $mform->setDefault('recordingduration',
             $this->get_default_value('recordingduration',
                 qtype_audioresponse::DEFAULT_RECORDING_DURATION));

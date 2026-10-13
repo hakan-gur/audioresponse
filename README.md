@@ -4,7 +4,7 @@ A manually graded Moodle question type for standardized-test-style speaking resp
 
 ## Features
 
-- Moodle 4.1, 4.2, 4.3, 4.4, 4.5, 5.0
+- Moodle 4.1, 4.2, 4.3, 4.4, 4.5, 5.0, 5.1, 5.2.
 - Designed for later compatibility with Moodle 5.x versions.
 - No administrator settings.
 - Fully translation-ready.

@@ -157,10 +157,6 @@ define([], function() {
             try {
                 recorder = new MediaRecorder(stream, {mimeType: 'audio/webm'});
             } catch (e) {
-                diagnostic('MediaRecorder constructor failed', {
-                    name: e && e.name ? e.name : 'unknown',
-                    message: e && e.message ? e.message : String(e)
-                });
                 fail(M.util.get_string('recordingfailed', 'qtype_audioresponse'));
                 return;
             }

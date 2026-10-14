@@ -2,10 +2,10 @@
 
 A manually graded Moodle question type for standardized-test-style speaking responses.
 
-## Features
+## Compatibility
 
-- Moodle 4.1, 4.2, 4.3, 4.4, 4.5, 5.0, 5.1, 5.2.
-- Designed for later compatibility with Moodle 5.x versions.
+- Tested with Moodle 4.1, 4.2, 4.3, 4.4, 4.5, 5.0, 5.1 and 5.2.
+- Compatibility with later Moodle releases has not yet been confirmed.
 - No administrator settings.
 - Fully translation-ready.
 - Audio only.
@@ -27,7 +27,7 @@ Students do not choose when recording starts and cannot create another take.
 
 - Delay before recording: 0 seconds by default.
 - Preparation countdown: 0 seconds by default.
-- Recording duration: 10 minutes by default.
+- Recording duration: 60 seconds by default.
 - Recording duration minimum: 10 seconds.
 - Recording duration maximum: 10 minutes (600 seconds).
 - Default mark: 10.

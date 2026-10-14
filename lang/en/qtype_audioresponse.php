@@ -31,3 +31,5 @@ $string['pleaserecord'] = 'Please complete your audio response.';
 $string['startsignal'] = 'Recording start signal';
 
 $string['privacy:metadata'] = 'The Audio Response question type stores audio responses as part of Moodle question attempts.';
+$string['privacy:metadata:core_question'] = 'Audio responses are stored as part of Moodle question-attempt data and are managed through Moodle\'s question engine.';
+$string['privacy:metadata:core_files'] = 'Audio recordings are stored in Moodle\'s file system as response files attached to question attempts.';

@@ -100,7 +100,6 @@ class qtype_audioresponse_renderer extends qtype_renderer {
             'uploadRepositoryId' => (int)$uploadrepository->id,
             'contextId' => (int)$options->context->id,
             'draftItemId' => (int)$draftitemid,
-            'maxUploadSize' => $this->get_upload_size_limit($options->context),
             'recordingFilename' => $filename,
             'delay' => (int)$question->delaybefore,
             'preparation' => (int)$question->preparationcountdown,
@@ -122,15 +121,4 @@ class qtype_audioresponse_renderer extends qtype_renderer {
         return $output;
     }
 
-    protected function get_upload_size_limit(context $context): int {
-        global $CFG;
-
-        $coursebytes = 0;
-        [$ctx, $course] = get_context_info_array($context->id);
-        if (is_object($course)) {
-            $coursebytes = $course->maxbytes;
-        }
-
-        return get_user_max_upload_file_size($context, $CFG->maxbytes, $coursebytes);
-    }
 }
